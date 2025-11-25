@@ -1,83 +1,175 @@
-'use client';
+"use client";
 
-import { Search } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react'
+import Image from "next/image";
+import { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
+import Navbar from "./navbar";
 
 const Hero = () => {
-    const dishes = [
-        { alt: "Belgian waffles", src: "/dish-1.png" },
-        { alt: "Pancakes with butter and berries", src: "/dish-2.png" },
-        { alt: "French toast with syrup and toppings", src: "/dish-3.png" },
-        { alt: "Crepes with fresh fruit", src: "/dish-4.png" },
-      ];
-    
-      const [selectedIndex, setSelectedIndex] = useState(0);
-    
-      const handleImageClick = (index: number) => {
-        // Only allow clicking adjacent images (left or right)
-        if (Math.abs(index - selectedIndex) === 1) {
-          setSelectedIndex(index);
-        }
-      };
-      
+  const dishes = [
+    {
+      id: 1,
+      alt: "Belgian waffles",
+      src: "/dish-1.png",
+      mainColor: "#880808",
+      circleColor: "#A52A2A",
+    },
+    {
+      id: 2,
+      alt: "Pancakes with butter and berries",
+      src: "/dish-2.png",
+      mainColor: "#0A4669",
+      circleColor: "#0A3659",
+    },
+    {
+      id: 3,
+      alt: "French toast with syrup and toppings",
+      src: "/dish-3.png",
+      mainColor: "#953553",
+      circleColor: "#A95C68",
+    },
+    {
+      id: 4,
+      alt: "Crepes with fresh fruit",
+      src: "/dish-4.png",
+      mainColor: "#006666",
+      circleColor: "#003333",
+    },
+  ];
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [backgroundColor, setBackgroundColor] = useState(dishes[0].mainColor);
+  const [circleColor, setCircleColor] = useState(dishes[0].circleColor);
+  const featureImageRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const circle1Ref = useRef<HTMLDivElement>(null);
+  const circle2Ref = useRef<HTMLDivElement>(null);
+
+  const handleImageClick = (index: number) => {
+    // Only allow clicking adjacent images (left or right)
+    if (Math.abs(index - selectedIndex) === 1) {
+      animateTransition(index);
+    }
+  };
+
+  const animateTransition = (newIndex: number) => {
+    const isMovingRight = newIndex > selectedIndex;
+    const featureImage = featureImageRef.current;
+    const circle2 = circle2Ref.current;
+
+    if (!featureImage) return;
+
+    // Create timeline animation
+    const timeline = gsap.timeline({
+      onStart: () => {
+        // Start color transition
+        gsap.to(backgroundRef.current, {
+          backgroundColor: dishes[newIndex].mainColor,
+          duration: 1.2,
+          ease: "power2.inOut",
+        });
+        gsap.to([circle1Ref.current, circle2Ref.current], {
+          backgroundColor: dishes[newIndex].circleColor,
+          duration: 1.2,
+          ease: "power2.inOut",
+        });
+      },
+      onComplete: () => {
+        setSelectedIndex(newIndex);
+        setBackgroundColor(dishes[newIndex].mainColor);
+        setCircleColor(dishes[newIndex].circleColor);
+      },
+    });
+
+    // Slide current image out at 45 degrees down
+    timeline.to(featureImage, {
+      duration: 0.7,
+      x: 200,
+      y: 200,
+      opacity: 0,
+      ease: "power2.inOut",
+    });
+
+    // Slide new image in from 45 degrees down from top (from second circle area)
+    timeline.fromTo(
+      featureImage,
+      {
+        x: 200,
+        y: -400,
+        opacity: 0,
+      },
+      {
+        duration: 0.7,
+        x: 0,
+        y: 0,
+        opacity: 1,
+        ease: "power2.inOut",
+      },
+      "-=0.3"
+    );
+
+    // Animate second circle movement
+    if (circle2) {
+      timeline.to(
+        circle2,
+        {
+          duration: 1.2,
+          x: isMovingRight ? 20 : -20,
+          y: isMovingRight ? -20 : 20,
+          ease: "power2.inOut",
+        },
+        0
+      );
+
+      timeline.to(
+        circle2,
+        {
+          duration: 1.2,
+          x: 0,
+          y: 0,
+          ease: "power2.inOut",
+        },
+        "-=0.6"
+      );
+    }
+  };
+
   return (
-    <div className="max-h-screen bg-[#880808]">
+    <div
+      ref={backgroundRef}
+      className="max-h-screen max-w-screen transition-colors duration-500"
+      style={{ backgroundColor: backgroundColor }}
+    >
       {/* Background Circles */}
       <div
-        className="w-[1079px] h-[1079px] bg-[#A52A2A] rounded-full p-4 absolute z-0"
+        ref={circle1Ref}
+        className="w-[1079px] h-[1079px] rounded-full p-4 absolute z-0 transition-colors duration-500"
         style={{
+          backgroundColor: circleColor,
           top: "-360px",
           left: "-428px",
           transform: "rotate(-14.55deg)",
         }}
       ></div>
+      {/* Second Circle */}
       <div
-        className="w-[1312.52px] h-[1282.4px] bg-[#A52A2A] rounded-full absolute z-0"
+        ref={circle2Ref}
+        className="w-[1312.52px] h-[1282.4px] rounded-full absolute z-0 transition-colors duration-500"
         style={{
+          backgroundColor: circleColor,
           top: "270px",
           left: "1270px",
           clipPath: "inset(0 0 50% 0)", // Clip the bottom 50% to remove the overflow
         }}
       ></div>
       {/* Navbar Section */}
-      <div className="relative flex items-center justify-between p-8">
-        <h1
-          className="text-white font-poppins text-4xl font-bold z-10 hidden md:block"
-          style={{
-            width: "211px",
-            height: "48px",
-            top: "51px",
-            left: "65px",
-          }}
-        >
-          RESTAURANT
-        </h1>
-        <div
-          className="flex items-center bg-white rounded-full px-6 py-3 w-96 shadow-lg"
-          style={{
-            width: "821px",
-            height: "61px",
-            top: "50px",
-            left: "1039px",
-          }}
-        >
-          <Search className="w-5 h-5 text-gray-400 mr-3" />
-          <input
-            type="text"
-            placeholder="Search...."
-            className="bg-transparent outline-none text-gray-900 w-full placeholder-gray-400"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          />
-        </div>
+      <div>
+        <Navbar />
       </div>
       {/* Main Content */}
-      <div className="px-16 grid grid-cols-2 gap-20 ">
+      <div className="px-16 grid grid-cols-2 gap-20 max-h-600vh ">
         {/* Left Content */}
-        <div
-          className="space-y-7 z-10 max-w-2xl"
-          style={{ transform: "translateY(150px)" }}
-        >
+        <div className="space-y-7 z-10 flex flex-col justify-center">
           {/* Heading */}
           <div className="w-[900px] h-[222px] top-[243px] left-[88px]">
             <div>
@@ -149,19 +241,22 @@ const Hero = () => {
         </div>
 
         {/* Right Content - Feature Image */}
-        <div className="flex z-10">
+        <div
+          ref={featureImageRef}
+          className="flex z-10"
+          style={{ transform: "translateY(-70px)" }}
+        >
           <Image
             src={dishes[selectedIndex].src}
             alt={dishes[selectedIndex].alt}
             width={628}
             height={1013}
-            className="transition-all duration-300"
-            style={{ transform: "translateY(-70px)" }}
+            priority
           />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

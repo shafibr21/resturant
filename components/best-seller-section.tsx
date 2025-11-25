@@ -85,9 +85,6 @@ export default function BestSellerSection() {
       ? dishes
       : dishes.filter((dish) => dish.category === selectedCategory);
 
-  console.log("Selected Category:", selectedCategory);
-  console.log("Filtered Dishes:", filteredDishes);
-
   return (
     <section className="py-16 px-8 max-w-7xl mx-auto">
       <div className="">

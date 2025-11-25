@@ -1,10 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function CustomerFeedbackSection() {
   const [currentFeedback, setCurrentFeedback] = useState(0);
+  const chefImageRef = useRef<HTMLDivElement>(null);
 
   const feedbacks = [
     {
@@ -33,6 +38,35 @@ export default function CustomerFeedbackSection() {
   const handleDot = (index: number) => {
     setCurrentFeedback(index);
   };
+
+  useEffect(() => {
+    const chefImage = chefImageRef.current;
+    if (!chefImage) return;
+
+    // Set initial state
+    gsap.set(chefImage, {
+      opacity: 0,
+      y: 100,
+    });
+
+    // Create scroll trigger animation
+    gsap.to(chefImage, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: chefImage,
+        start: "top 70%", // When top of element is 70% from top of viewport (30% visible)
+        end: "top 50%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
 
   return (
     <section className="pt-10 px-4 md:px-6 lg:px-12 bg-white">
@@ -74,7 +108,9 @@ export default function CustomerFeedbackSection() {
                     key={index}
                     onClick={() => handleDot(index)}
                     className={`w-3 h-3 rounded-full transition-colors ${
-                      index === currentFeedback ? "bg-red-600" : "bg-gray-300"
+                      index === currentFeedback
+                        ? "bg-red-600"
+                        : "bg-gray-100 border border-red-600"
                     }`}
                     aria-label={`Go to feedback ${index + 1}`}
                   />
@@ -87,13 +123,13 @@ export default function CustomerFeedbackSection() {
           <div className="flex justify-center md:justify-end">
             <div className="relative w-full max-w-md">
               {/* Chef image */}
-              <div className="relative z-10">
+              <div ref={chefImageRef} className="relative z-10">
                 <Image
                   src="/chef.png"
                   alt="Professional chef"
-                  width={500}
+                  width={777}
                   height={500}
-                  className="object-cover"
+                  className=""
                 />
               </div>
             </div>
