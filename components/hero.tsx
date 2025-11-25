@@ -89,7 +89,7 @@ const Hero = () => {
               BREAKFAST
             </h2>
             <p
-              className="text-white max-w-xl font-poppins"
+              className="text-white max-w-2xl font-poppins"
               style={{
                 fontWeight: "700",
                 fontSize: "18px",
