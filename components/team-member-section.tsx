@@ -29,12 +29,12 @@ export default function TeamMemberSection() {
   return (
     <section className="relative w-full py-24 bg-white">
       {/* Red background with texture overlay */}
-      <div className="absolute inset-0 bg-[url('/Bg.png')] h-1/2" />
+      <div className="absolute inset-0 bg-[url('/Bg-mobile.png')] md:bg-[url('/Bg.png')] md:h-1/2 h-1/4" />
 
       {/* Content */}
       <div className="relative z-10 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 hidden md:block">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-poppins">Team Member</h2>
           <p className="text-white text-center max-w-2xl mx-auto font-poppins text-base leading-relaxed">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Varius sed pharetra dictum neque massa congue
@@ -42,11 +42,11 @@ export default function TeamMemberSection() {
         </div>
 
         {/* Team Members Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member) => (
             <div key={member.name} className="flex flex-col">
               {/* Image Container */}
-              <div className="relative w-full h-64 mb-4 rounded-lg overflow-hidden shadow-lg">
+              <div className="relative w-full h-30 md:h-64 mb-4 rounded-lg overflow-hidden shadow-lg">
                 <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
               </div>
 

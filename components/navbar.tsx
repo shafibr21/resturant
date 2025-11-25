@@ -47,14 +47,10 @@ const Navbar = () => {
       </h1>
       <div className="relative">
         <div
-          className={`flex items-center bg-white rounded-full px-6 py-3 shadow-lg cursor-pointer z-10 ${isSearchOpen ? 'rounded-b-none rounded-t-3xl' : ''}`}
-          style={{
-            width: "821px",
-            height: "61px",
-          }}
+          className={`flex items-center bg-white rounded-full md:px-6 md:py-3 shadow-lg cursor-pointer z-10 w-80 h-10  md:w-205 md:h-15  ${isSearchOpen ? 'rounded-b-none rounded-t-3xl' : ''}`}
           onClick={() => setIsSearchOpen(!isSearchOpen)}
         >
-          <Search className="w-5 h-5 text-gray-400 mr-3" />
+          <Search className="w-5 h-5 text-gray-400 mr-3 ml-2" />
           <input
             type="text"
             placeholder="Search...."
@@ -68,8 +64,7 @@ const Navbar = () => {
         {/* Search Dropdown */}
         {isSearchOpen && (
           <div
-            className="absolute top-full border-t bg-white rounded-b-3xl shadow-2xl overflow-hidden z-50"
-            style={{ width: "821px" }}
+            className="absolute top-full border-t bg-white rounded-b-3xl shadow-2xl overflow-hidden z-50 md:w-205 w-80"
           >
             {/* Search Results */}
             <div className="max-h-70 overflow-y-auto">

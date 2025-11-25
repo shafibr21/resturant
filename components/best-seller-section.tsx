@@ -86,7 +86,7 @@ export default function BestSellerSection() {
       : dishes.filter((dish) => dish.category === selectedCategory);
 
   return (
-    <section className="py-16 px-8 max-w-7xl mx-auto">
+    <section className="py-8 md:py-16 px-3 md:px-8 max-w-7xl mx-auto">
       <div className="">
         {/* Header */}
         <div className="text-center mb-8">
@@ -102,7 +102,7 @@ export default function BestSellerSection() {
 
         {/* Filters and Buttons */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-          <div className="flex gap-5">
+          <div className="flex gap-1 md:gap-5 mb-1">
             {categories.map((category) => (
               <button
                 key={category.value}
@@ -117,7 +117,7 @@ export default function BestSellerSection() {
               </button>
             ))}
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-2 md:gap-4">
             <button className="px-6 py-2 rounded-full bg-gray-800 text-white font-poppins font-medium hover:bg-gray-900 transition-colors">
               Add Food
             </button>
@@ -128,7 +128,7 @@ export default function BestSellerSection() {
         </div>
 
         {/* Dishes Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
           {filteredDishes.map((dish) => (
             <div key={dish.id} className="flex flex-col">
               {/* Image */}

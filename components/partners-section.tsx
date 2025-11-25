@@ -68,7 +68,7 @@ export default function PartnersSection() {
   }, []);
 
   return (
-    <section className="py-12 px-8 max-w-7xl mx-auto">
+    <section className="py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-12">
         {/* Subtitle */}
         <p className="text-red-500 font-poppins font-semibold mb-2">

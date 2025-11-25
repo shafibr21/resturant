@@ -56,7 +56,7 @@ const Hero = () => {
     >
       {/* Background Circles */}
       <div
-        className="w-[1079px] h-[1079px] rounded-full absolute z-0 transition-colors duration-700 ease-in-out"
+        className="w-[1079px] h-[1079px] rounded-full absolute z-0 transition-colors duration-700 ease-in-out md:block hidden"
         style={{
           backgroundColor: dishes[selectedIndex].circleColor,
           top: "-360px",
@@ -64,24 +64,35 @@ const Hero = () => {
           transform: "rotate(-14.55deg)",
         }}
       ></div>
+
+      {/* Mobile Background Circle */}
+      <div
+        className="w-[600px] h-[600px] rounded-full absolute z-0 transition-colors duration-700 ease-in-out md:hidden"
+        style={{
+          backgroundColor: dishes[selectedIndex].circleColor,
+          top: "-200px",
+          left: "-150px",
+        }}
+      ></div>
+
       {/* Navbar Section */}
-      <div>
+      <div className="">
         <Navbar />
       </div>
+
       {/* Main Content */}
       <div
-        className="relative px-16 flex items-center"
+        className="relative px-4 md:px-16 flex flex-col md:flex-row items-center justify-center"
         style={{ minHeight: "calc(100vh - 120px)" }}
       >
         {/* Left Content */}
-        <div className="space-y-8 z-10 max-w-2xl">
+        <div className="space-y-4 md:space-y-8 z-10 max-w-2xl text-center md:text-left pt-8 md:pt-0">
           {/* Heading */}
           <div>
             <h2
-              className="text-white font-poppins mb-6"
+              className="text-white font-poppins mb-3 md:mb-6 text-4xl md:text-[96px]"
               style={{
                 fontWeight: "400",
-                fontSize: "96px",
                 lineHeight: "100%",
                 letterSpacing: "0%",
               }}
@@ -89,22 +100,33 @@ const Hero = () => {
               BREAKFAST
             </h2>
             <p
-              className="text-white max-w-2xl font-poppins"
+              className="text-white max-w-xs md:max-w-2xl font-poppins mx-auto md:mx-0 text-sm md:text-lg"
               style={{
                 fontWeight: "700",
-                fontSize: "18px",
                 lineHeight: "150%",
               }}
             >
               Breakfast, often referred to as the 'most important meal of the
-              day', provides essential nutrients to kick start our day. It
-              includes a variety of foods, like fruits, cereals, dairy products,
-              and proteins, that contribute to a balanced diet.
+              day', provides essential nutrients to kick start our day.{" "}
+              <span className="underline cursor-pointer">See more</span>
             </p>
           </div>
 
+          {/* Large Feature Image for Mobile */}
+          <div className="md:hidden flex justify-center my-6">
+            <div className="w-64 h-64 rounded-full overflow-hidden bg-white shadow-2xl">
+              <Image
+                src={dishes[selectedIndex].src}
+                alt={dishes[selectedIndex].alt}
+                width={256}
+                height={256}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
           {/* Dish Carousel */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex gap-3 md:gap-4 pt-4 justify-center md:justify-start">
             {dishes.map((item, idx) => {
               const isSelected = idx === selectedIndex;
               const isClickable = Math.abs(idx - selectedIndex) === 1;
@@ -112,12 +134,12 @@ const Hero = () => {
               return (
                 <div key={idx} className="flex flex-col items-center">
                   <div
-                    className={`w-[120px] h-[120px] rounded-full overflow-hidden shadow-xl transition-all bg-white ${
+                    className={`w-16 h-16 md:w-[120px] md:h-[120px] rounded-full overflow-hidden shadow-xl transition-all bg-white ${
                       isSelected
-                        ? "border-white/50"
+                        ? "border-2 border-white/50"
                         : isClickable
-                        ? "border-white/30 hover:border-white/50 cursor-pointer"
-                        : "border-white/20 opacity-70 cursor-not-allowed"
+                        ? "border-2 border-white/30 hover:border-white/50 cursor-pointer"
+                        : "border-2 border-white/20 opacity-70 cursor-not-allowed"
                     }`}
                     onClick={() => handleImageClick(idx)}
                   >
@@ -130,7 +152,7 @@ const Hero = () => {
                     />
                   </div>
                   {isSelected && (
-                    <div className="w-20 h-1 bg-white mt-3 mx-auto rounded" />
+                    <div className="w-12 md:w-20 h-1 bg-white mt-2 md:mt-3 mx-auto rounded" />
                   )}
                 </div>
               );
@@ -138,9 +160,9 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Right Content - Feature Image */}
+        {/* Right Content - Feature Image (Desktop Only) */}
         <div
-          className="absolute z-10 scale-180"
+          className="absolute z-10 scale-180 hidden md:block"
           style={{
             right: "-320px",
             top: "140%",
